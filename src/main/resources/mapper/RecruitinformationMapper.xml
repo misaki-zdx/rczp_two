@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sccc.rczp.mapper.RecruitinformationMapper">
+    <resultMap id="BaseResultMap" type="com.sccc.rczp.bean.po.Recruitinformation">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="rid" jdbcType="INTEGER" property="rid"/>
+        <result column="eid" jdbcType="INTEGER" property="eid"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="benefit" jdbcType="VARCHAR" property="benefit"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="salaryMin" jdbcType="INTEGER" property="salarymin"/>
+        <result column="salaryMax" jdbcType="INTEGER" property="salarymax"/>
+        <result column="qualifications" jdbcType="VARCHAR" property="qualifications"/>
+        <result column="rtime" jdbcType="DATE" property="rtime"/>
+        <result column="jobdes" jdbcType="LONGVARCHAR" property="jobdes"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+    </resultMap>
+
+    <resultMap id="RecruitinformationAll" type="Recruitinformation" extends="BaseResultMap">
+        <association property="enterprise" column="eid" javaType="Enterprise" select="selectEnterprsieByRid"/>
+        <association property="type" column="tid" javaType="Type" select="selectTypeByTid"/>
+    </resultMap>
+
+    <select id="selectEnterprsieByRid" resultType="enterprise">
+    select * from enterprise where eid = #{eid}
+  </select>
+
+    <select id="selectTypeByTid" resultType="Type">
+    select * from type where tid = #{tid};
+  </select>
+
+    <select id="selecRecruitinformationtAll" resultMap="RecruitinformationAll">
+    select * from recruitinformation where rid = #{rid};
+  </select>
+
+    <!--按id批量删除-->
+    <delete id="deleteMoreById" parameterType="int[]">
+        delete from recruitinformation where rid in
+        <foreach collection="array" item="arr" index="no" open="("
+                 separator="," close=")">
+            #{arr}
+        </foreach>
+    </delete>
+    
+      <!--模糊查询 按工作查找-->
+<select id="selectByWork" resultMap="BaseResultMap">
+   select * from recruitinformation where job like "%"#{work}"%"
+</select>
+
+    <!--按工作和地址模糊查询-->
+    <select id="searchWork" resultMap="BaseResultMap">
+   select * from recruitinformation where
+   <if test="work !=null">
+       job like "%"#{work}"%" and
+   </if>
+    path = #{path}
+</select>
+
+</mapper>

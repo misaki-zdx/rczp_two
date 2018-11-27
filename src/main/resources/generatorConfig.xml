@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!--导入数据库配置文件-->
+    <properties resource="db.properties"/>
+
+    <!--自动生成配置-->
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!--通用mapper路径-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="com.sccc.rczp.common.mapper.CommonMapper"/>
+        </plugin>
+
+        <!--加载数据库配置-->
+        <jdbcConnection
+                driverClass="${driverClass}" connectionURL="${jdbcUrl}" userId="${user}" password="${password}"/>
+
+        <!--java bean 目录-->
+        <javaModelGenerator
+                targetPackage="com.sccc.rczp.bean.po" targetProject="src/main/java"/>
+
+        <!--xml文件目录-->
+        <sqlMapGenerator
+                targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!--mapper文件目录-->
+        <javaClientGenerator
+                targetPackage="com.sccc.rczp.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <!--自动生成的表-->
+        <table tableName="%"/>
+    </context>
+</generatorConfiguration>

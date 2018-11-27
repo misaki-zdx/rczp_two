@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sccc.rczp.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.sccc.rczp.bean.po.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="intention" jdbcType="VARCHAR" property="intention" />
+    <result column="uName" jdbcType="VARCHAR" property="uname" />
+    <result column="uImage" jdbcType="VARCHAR" property="uimage" />
+    <result column="uabstract" jdbcType="VARCHAR" property="uabstract" />
+    <result column="upassword" jdbcType="VARCHAR" property="upassword" />
+  </resultMap>
+
+  <resultMap id="allUser" type="User" extends="BaseResultMap">
+    <association property="admin" column="aid" javaType="Admin" select="selectAdminByAid"/>
+    <collection property="deliverrecord" column="uid" ofType="Deliverrecord" select="selectDeliverrecordByuid">
+      <!--<association property="recruitinformation" column="rid" javaType="Recruitinformation" select="selectRecruitByRid"/>        隔层级是获取到数据  参数来源于本对象  -->
+    </collection>
+  </resultMap>
+
+
+  <!--  结果嵌套 优于 结果查询嵌套 ex:↓ -->
+  <resultMap id="allUser2" type="User" extends="BaseResultMap">
+    <!--  暂时不需要admin参数 <association property="admin" column="aid" javaType="Admin">
+        <result column="aname" jdbcType="VARCHAR" property="aname" />
+    </association>-->
+    <collection property="deliverrecord" column="uid" ofType="Deliverrecord">
+      <id column="did" jdbcType="INTEGER" property="did" />
+     <!-- <result column="uid" jdbcType="INTEGER" property="uid" />-->
+      <result column="rid" jdbcType="INTEGER" property="rid" />
+      <result column="passflag" jdbcType="INTEGER" property="passflag" />
+      <result column="dtime" jdbcType="TIMESTAMP" property="dtime" />
+      <association property="recruitinformation" column="rid" javaType="Recruitinformation">
+       <!-- <id column="rid" jdbcType="INTEGER" property="rid"/>-->
+        <result column="eid" jdbcType="INTEGER" property="eid"/>
+        <result column="job" jdbcType="VARCHAR" property="job"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="benefit" jdbcType="VARCHAR" property="benefit"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="salaryMin" jdbcType="INTEGER" property="salarymin"/>
+        <result column="salaryMax" jdbcType="INTEGER" property="salarymax"/>
+        <result column="qualifications" jdbcType="VARCHAR" property="qualifications"/>
+        <result column="rtime" jdbcType="DATE" property="rtime"/>
+        <result column="jobdes" jdbcType="LONGVARCHAR" property="jobdes"/>
+        <result column="tid" jdbcType="INTEGER" property="tid"/>
+      </association>
+    </collection>
+
+  </resultMap>
+
+ <!-- <select id="selectRecruitByRid" resultType="Recruitinformation">
+    select *  from recruitinformation where rid = #{rid};
+  </select>-->
+
+  <select id="selectUserAll2" resultMap="allUser2">
+    select *  from user u inner join deliverrecord d on u.uid = d.uid inner join recruitinformation r on d.rid = r.rid where u.uid = #{0}
+  </select>
+
+  <select id="selectAdminByAid" resultType="Admin">
+    select aid,aname from admin where aid = #{aid};
+  </select>
+
+  <select id="selectDeliverrecordByuid" resultType="Deliverrecord">
+    select *  from deliverrecord where uid =#{uid};
+  </select>
+
+  <select id="selectUserAll" resultMap="allUser">
+    select  * from user where uid = #{uid};
+  </select>
+  
+  <update id="updateUserSpecial" parameterType="User">
+    update  user SET aid = #{aid},uName = #{uname},sex = #{sex},birthday = #{birthday},intention = #{intention},uabstract = #{uabstract},upassword = #{upassword} WHERE uid = #{uid}
+  </update>
+  
+  <!--模糊查询 按姓名查找-->
+<select id="selectByGeneralName" resultMap="BaseResultMap">
+   select * from user where uName like "%"#{name}"%"
+</select>
+
+<select id="login" resultMap="BaseResultMap">
+	select * from user where uid = #{rid} and upassword = #{password}
+</select>
+
+</mapper>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		 http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--扫描路径下面的包-->
+    <context:component-scan base-package="com.sccc.rczp.controller"/>
+    <!-- <context:component-scan base-package="com.sccc.rczp.common.controller"/>-->
+
+    <!--使用servlet管理静态资源-->
+    <mvc:default-servlet-handler/>
+
+    <!--配置controller返回string编码-->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!--直接访问此url 的视图，而无需要通过控制器-->
+    <mvc:view-controller path="/restful" view-name="helloRestView"/>
+
+    <bean id="BeanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+        <!-- 自定义order,越小越靠前 -->
+        <property name="order" value="30"></property>
+    </bean>
+
+    <!--配置不支持json格式返回html格式-->
+    <bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--jsp页面映射-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--文件上传配置-->
+
+    <!--......mmp 注意加上这个id 不然你会再次疯狂的-->
+
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="1073741824"/>
+        <property name="resolveLazily" value="true"/>
+    </bean>
+
+    <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->
+    <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->
+
+    <!--注解开启切面-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <mvc:interceptors>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.sccc.rczp.common.MyIntercepter"/>
+        </mvc:interceptor>
+        <!--拦截器会依次执行-->
+        <mvc:interceptor>
+            <mvc:mapping path="/index/meDetail/*"/>
+            <bean class="com.sccc.rczp.common.LoginIntercpter"/>
+        </mvc:interceptor>
+
+    </mvc:interceptors>
+</beans>

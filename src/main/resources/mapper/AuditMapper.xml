@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sccc.rczp.mapper.AuditMapper">
+  <resultMap id="BaseResultMap" type="com.sccc.rczp.bean.po.Audit">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="auid" jdbcType="INTEGER" property="auid" />
+    <result column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="austate" jdbcType="INTEGER" property="austate" />
+  </resultMap>
+</mapper>

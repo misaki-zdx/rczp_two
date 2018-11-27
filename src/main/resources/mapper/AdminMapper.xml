@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sccc.rczp.mapper.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.sccc.rczp.bean.po.Admin">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="aid" jdbcType="INTEGER" property="aid" />
+    <result column="aname" jdbcType="VARCHAR" property="aname" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+  </resultMap>
+
+  <resultMap extends="BaseResultMap" id="AdminsWtihUserResult" type="admin">
+    <collection column="aid" ofType="user" property="users" select="selectUserByAid" /> <!--这里select自带返回类型 不需要额外的返回类型-->
+  </resultMap>
+
+
+<!--  &amp;lt;resultMap id="UserResultMap" type="user"&amp;gt;
+    &amp;lt;id property="uid" column="uid"/&amp;gt;
+    &amp;lt;result property="aid" column="aid"/&amp;gt;
+    &amp;lt;result property="birthday" column="birthday"/&amp;gt;
+    &amp;lt;result property="sex" column="sex"/&amp;gt;
+    &amp;lt;result property="intention" column="intention"/&amp;gt;
+    &amp;lt;result property="uname" column="uname"/&amp;gt;
+    &amp;lt;result property="uimage" column="uimage"/&amp;gt;
+    &amp;lt;result property="uabstract" column="uabstract"/&amp;gt;
+    &amp;lt;result property="upassword" column="upassword"/&amp;gt;
+  &amp;lt;/resultMap&amp;gt;
+
+    &amp;lt;resultMap id="EnterpriseResultMap" type="Enterprise" &amp;gt;
+        &amp;lt;id column="eid" jdbcType="INTEGER" property="eid" /&amp;gt;
+        &amp;lt;result column="aid" jdbcType="INTEGER" property="aid" /&amp;gt;
+        &amp;lt;result column="eimage" jdbcType="VARCHAR" property="eimage" /&amp;gt;
+        &amp;lt;result column="aAbstract" jdbcType="VARCHAR" property="aabstract" /&amp;gt;
+        &amp;lt;result column="detailInformation" jdbcType="VARCHAR" property="detailinformation" /&amp;gt;
+        &amp;lt;result column="address" jdbcType="VARCHAR" property="address" /&amp;gt;
+        &amp;lt;result column="email" jdbcType="VARCHAR" property="email" /&amp;gt;
+        &amp;lt;result column="phoneNumber" jdbcType="VARCHAR" property="phonenumber" /&amp;gt;
+        &amp;lt;result column="ename" jdbcType="VARCHAR" property="ename" /&amp;gt;
+        &amp;lt;result column="epassword" jdbcType="VARCHAR" property="epassword" /&amp;gt;
+    &amp;lt;/resultMap&amp;gt;-->
+
+  <resultMap extends="BaseResultMap" id="AdminAllMap" type="Admin">
+      <collection column="aid" ofType="User" property="users" select="selectUsersByAid" />
+      <collection column="aid" ofType="Enterprise" property="enterprises" select="selectEnterprise" />
+  </resultMap>
+
+  <select id="selectUsersByAid" parameterType="int" resultType="user">
+    select * from user  where aid = #{aid}
+  </select>
+
+    <select id="selectEnterprise" parameterType="int" resultType="enterprise">
+        select * from enterprise where aid = #{aid};
+    </select>
+
+  <select id="getAllAdmins" parameterType="int" resultMap="AdminAllMap">
+    select * from admin where aid = #{aid}
+  </select>
+</mapper>
