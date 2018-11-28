@@ -166,28 +166,39 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- webservice jar -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-rt-frontend-jaxws</artifactId>-->
-            <!--<version>3.1.6</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.cxf/cxf-core &ndash;&gt;-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-core</artifactId>-->
-            <!--<version>3.1.6</version>-->
-        <!--</dependency>-->
-
-        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-transports-http &ndash;&gt;-->
-
-        <!--<dependency>-->
-            <!--<groupId>org.apache.cxf</groupId>-->
-            <!--<artifactId>cxf-rt-transports-http</artifactId>-->
-            <!--<version>3.1.6</version>-->
-        <!--</dependency>-->
+        <!--- Activiti依赖导入 -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>5.18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>5.18.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-core-asl</artifactId>
+                    <groupId>org.codehaus.jackson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-lang3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-lang3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -200,11 +211,6 @@
             <version>3.1.8</version>
         </dependency>
 
-        <!-- <dependency>
-             <groupId>com.github.pagehelper</groupId>
-             <artifactId>pagehelper</artifactId>
-             <version>4.1.4</version>
-         </dependency> -->
     </dependencies>
     <build>
         <finalName>rczp</finalName>
