@@ -14,7 +14,7 @@ public class AspectTest {
     }
 
     public void f3() {
-        System.out.println("aspect Test");
+        System.out.println("aspect EnumTest");
     }
 
 }

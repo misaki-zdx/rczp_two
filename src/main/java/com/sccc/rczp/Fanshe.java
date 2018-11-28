@@ -2,10 +2,13 @@ package com.sccc.rczp;
 
 
 import com.sccc.rczp.bean.po.User;
-import com.sccc.rczp.common.MyIntercepter;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
 
+/**
+ * @author Misaki
+ */
 public class Fanshe {
     public static void main(String[] args) {
         User user = new User();
@@ -24,12 +27,10 @@ public class Fanshe {
         try {
             //获取对象的方式 默认
             User user1 = userClass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
         Constructor<?>[] constructors = userClass.getConstructors();
-        System.out.println(constructors);
+        System.out.println(Arrays.toString(constructors));
     }
 }
