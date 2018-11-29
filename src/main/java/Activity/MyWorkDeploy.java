@@ -9,11 +9,16 @@ import org.junit.Test;
 public class MyWorkDeploy {
     ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
 
-    //部署流程
+    /**
+     * 部署流程
+     */
     @Test
     public void deployProcess(){
         RepositoryService repositoryService = processEngine.getRepositoryService();
-        DeploymentBuilder deployment = repositoryService.createDeployment();  //部署调度 deployment
+        /**
+         * 部署调度 deployment
+         */
+        DeploymentBuilder deployment = repositoryService.createDeployment();
         deployment.addClasspathResource("activity/bpmnOne.bpmn");
         deployment.deploy();
     }

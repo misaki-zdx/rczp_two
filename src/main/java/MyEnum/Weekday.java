@@ -1,8 +1,9 @@
 package MyEnum;
 
 /**
- * @Author: Misaki
- * @Date: 10:38
+ * Author: Misaki
+ * Date: 10:38
+ * 一个枚举类的学习
  */
 public enum Weekday {
     /**

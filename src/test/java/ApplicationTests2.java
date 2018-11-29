@@ -41,11 +41,7 @@ public class ApplicationTests2 {
 		PageInfo<Admin> allAndPageInfo = null;
 		try {
 			allAndPageInfo = adminService.getAllAndPageInfo(Admin.class, 1, 2);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		System.out.println(allAndPageInfo);
